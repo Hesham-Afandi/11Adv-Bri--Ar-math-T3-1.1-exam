@@ -1,425 +1,454 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📐 Grade 11 Advanced Inspire - Vectors in 3D Space (1.2)</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Cairo', sans-serif; }
-        body.en-mode { font-family: 'Inter', sans-serif; }
-        .correct { background-color: #dcfce7 !important; border-color: #16a34a !important; }
-        .incorrect { background-color: #fee2e2 !important; border-color: #dc2626 !important; }
-        .formula { font-family: 'Times New Roman', serif; font-style: italic; direction: ltr; display: inline-block; }
-        .timer-warning { color: #dc2626 !important; animation: pulse 1s infinite; }
-        @keyframes pulse { 50% { opacity: 0.7; } }
-        @media print { .no-print { display: none !important; } }
-        .success-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 0.875rem; }
-        .grade-excellent { background: #dcfce7; color: #166534; }
-        .grade-good { background: #fef3c7; color: #92400e; }
-        .grade-pass { background: #dbeafe; color: #1e40af; }
-        .grade-fail { background: #fee2e2; color: #991b1b; }
-        
-        /* Language Switcher */
-        .lang-switch {
-            position: fixed; top: 16px; left: 16px; z-index: 100;
-            background: white; padding: 6px; border-radius: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15); display: flex; gap: 4px;
-            border: 2px solid #0d9488;
-        }
-        [dir="ltr"] .lang-switch { left: auto; right: 16px; }
-        .lang-btn {
-            padding: 6px 14px; border-radius: 20px; cursor: pointer; font-weight: bold;
-            transition: all 0.3s; border: none; font-size: 0.875rem;
-            background: transparent; color: #6b7280;
-        }
-        .lang-btn.active { background: #0d9488; color: white; box-shadow: 0 2px 6px rgba(13,148,136,0.4); }
-        .lang-btn:hover:not(.active) { background: #f0fdfa; color: #0d9488; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📐 امتحان المتجهات في الفضاء ثلاثي الأبعاد | Grade 12 Advanced</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+body { font-family: 'Cairo', sans-serif; }
+body.en-mode { font-family: 'Inter', sans-serif; direction: ltr; text-align: left; }
+.correct { background-color: #dcfce7 !important; border-color: #16a34a !important; }
+.incorrect { background-color: #fee2e2 !important; border-color: #dc2626 !important; }
+.formula { font-family: 'Times New Roman', serif; font-style: italic; direction: ltr; display: inline-block; }
+.timer-warning { color: #dc2626 !important; animation: pulse 1s infinite; }
+@keyframes pulse { 50% { opacity: 0.7; } }
+@media print { .no-print { display: none !important; } }
+.success-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 0.875rem; }
+.grade-excellent { background: #dcfce7; color: #166534; }
+.grade-good { background: #fef3c7; color: #92400e; }
+.grade-pass { background: #dbeafe; color: #1e40af; }
+.grade-fail { background: #fee2e2; color: #991b1b; }
+
+/* Language Switcher */
+.lang-switch {
+    position: fixed; top: 16px; left: 16px; z-index: 100;
+    background: white; padding: 6px; border-radius: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15); display: flex; gap: 4px;
+    border: 2px solid #4F46E5;
+}
+body.en-mode .lang-switch { left: auto; right: 16px; }
+.lang-btn {
+    padding: 6px 14px; border-radius: 20px; cursor: pointer; font-weight: bold;
+    transition: all 0.3s; border: none; font-size: 0.875rem;
+    background: transparent; color: #6b7280;
+}
+.lang-btn.active { background: #4F46E5; color: white; box-shadow: 0 2px 6px rgba(79,70,229,0.4); }
+.lang-btn:hover:not(.active) { background: #eef2ff; color: #4F46E5; }
+
+/* Bilingual content */
+[data-ar][data-en] { display: inline; }
+</style>
 </head>
 <body class="bg-gray-50 text-gray-800 p-4 md:p-8 min-h-screen">
 
-    <!-- Language Switcher -->
-    <div class="lang-switch no-print">
-        <button class="lang-btn active" onclick="setLanguage('ar')" id="btn-ar">عربي</button>
-        <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">EN</button>
+<!-- Language Switcher -->
+<div class="lang-switch no-print">
+    <button class="lang-btn active" onclick="setLanguage('ar')" id="btn-ar">عربي</button>
+    <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">EN</button>
+</div>
+
+<!-- Timer -->
+<div id="timer-container" class="max-w-4xl mx-auto mb-4 text-center no-print">
+    <div class="bg-white p-4 rounded-xl shadow-md inline-block border-2 border-teal-100">
+        <span class="text-gray-600 ml-2"><span data-ar data-en>⏱️ الوقت المتبقي:</span></span>
+        <span id="timer" class="text-2xl font-bold text-teal-600 font-mono">60:00</span>
+    </div>
+</div>
+
+<!-- Controls -->
+<div class="max-w-4xl mx-auto mb-6 flex flex-wrap gap-3 justify-center no-print">
+    <button onclick="toggleAnswers()" class="bg-teal-600 hover:bg-teal-700 text-white px-5 py-2 rounded-lg font-medium transition shadow cursor-pointer">
+        <span data-ar data-en>👁️ إظهار / إخفاء الإجابات النموذجية</span>
+    </button>
+    <button onclick="window.print()" class="bg-gray-800 hover:bg-gray-900 text-white px-5 py-2 rounded-lg font-medium transition shadow cursor-pointer">
+        <span data-ar data-en>🖨️ طباعة / حفظ كـ PDF</span>
+    </button>
+</div>
+
+<!-- Header -->
+<header class="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-md mb-8 border-r-4 border-teal-600">
+    <div class="text-center">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+            <span data-ar data-en>📐 امتحان المتجهات في الفضاء ثلاثي الأبعاد</span>
+        </h1>
+        <h2 class="text-lg text-teal-600 font-semibold">
+            <span data-ar data-en>الصف الثاني عشر المتقدم - الوحدة 7.4</span>
+        </h2>
+        <p class="text-sm text-gray-600 mt-2">
+            <span data-ar data-en>المتجهات في الفضاء ثلاثي الأبعاد، الضرب القياسي، الضرب الاتجاهي، والتطبيقات</span>
+        </p>
+    </div>
+    <div class="mt-4 flex flex-wrap justify-center gap-4 text-sm text-gray-600">
+        <span>📅 <span data-ar data-en>التاريخ:</span> <input type="text" class="border-b border-gray-400 bg-transparent w-28 text-center"></span>
+        <span>👤 <span data-ar data-en>الاسم:</span> <input type="text" id="studentName" class="border-b border-gray-400 bg-transparent w-32 text-center" placeholder="أدخل الاسم"></span>
+        <span>🏫 <span data-ar data-en>الشعبة:</span> <input type="text" id="studentClass" class="border-b border-gray-400 bg-transparent w-28 text-center" placeholder="الفصل"></span>
+        <span>⏱️ <span data-ar data-en>المدة: 60 دقيقة</span></span>
+        <span>📊 <span data-ar data-en>المجموع: 100 درجة</span></span>
+    </div>
+</header>
+
+<main class="max-w-4xl mx-auto space-y-8">
+
+<!-- Part 1: Vectors in 3D Space -->
+<section class="bg-white p-6 rounded-xl shadow-lg">
+    <h2 class="text-xl font-bold mb-4 text-teal-700">
+        <span data-ar data-en>🔹 الجزء الأول: المتجهات في الفضاء ثلاثي الأبعاد</span>
+    </h2>
+    <ol id="section1-list" class="space-y-4 text-sm">
+        <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-1">
+            <strong>1.</strong> <span data-ar data-en>إذا كان المتجه u = 〈3, 4, -2〉، فما هو طوله |u|؟</span><br>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q1" value="a" class="ml-2"> <span data-ar data-en>أ) √29 ≈ 5.39</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q1" value="b" class="ml-2"> <span data-ar data-en>ب) √21 ≈ 4.58</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q1" value="c" class="ml-2"> <span data-ar data-en>ج) 29</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q1" value="d" class="ml-2"> <span data-ar data-en>د) √9 = 3</span></label>
+            <div class="answer-box text-green-700 mt-2 font-medium hidden">
+                <span data-ar data-en>✅ الإجابة: أ) |u| = √(3² + 4² + (-2)²) = √(9 + 16 + 4) = √29 ≈ 5.39</span>
+            </div>
+        </li>
+        <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-2">
+            <strong>2.</strong> <span data-ar data-en>إذا كان المتجه v = 〈-4, 2, -3〉، فما هو طوله |v|؟</span><br>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q2" value="a" class="ml-2"> <span data-ar data-en>أ) √29 ≈ 5.39</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q2" value="b" class="ml-2"> <span data-ar data-en>ب) 29</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q2" value="c" class="ml-2"> <span data-ar data-en>ج) √21 ≈ 4.58</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q2" value="d" class="ml-2"> <span data-ar data-en>د) 9</span></label>
+            <div class="answer-box text-green-700 mt-2 font-medium hidden">
+                <span data-ar data-en>✅ الإجابة: أ) |v| = √((-4)² + 2² + (-3)²) = √(16 + 4 + 9) = √29 ≈ 5.39</span>
+            </div>
+        </li>
+        <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-3">
+            <strong>3.</strong> <span data-ar data-en>إذا كان u = 〈3, -5, 4〉 و v = 〈5, 7, 5〉، فما هو الضرب القياسي u · v؟</span><br>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q3" value="a" class="ml-2"> <span data-ar data-en>أ) -35</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q3" value="b" class="ml-2"> <span data-ar data-en>ب) 1</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q3" value="c" class="ml-2"> <span data-ar data-en>ج) 35</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q3" value="d" class="ml-2"> <span data-ar data-en>د) -1</span></label>
+            <div class="answer-box text-green-700 mt-2 font-medium hidden">
+                <span data-ar data-en>✅ الإجابة: أ) u · v = (3)(5) + (-5)(7) + (4)(5) = 15 - 35 + 20 = 0</span>
+            </div>
+        </li>
+        <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-4">
+            <strong>4.</strong> <span data-ar data-en>إذا كان u = 〈4, -2, -3〉 و v = 〈1, 3, -2〉، فما هو الضرب الاتجاهي u × v؟</span><br>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q4" value="a" class="ml-2"> <span data-ar data-en>أ) 〈13, 5, 14〉</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q4" value="b" class="ml-2"> <span data-ar data-en>ب) 〈-5, -6, 3〉</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q4" value="c" class="ml-2"> <span data-ar data-en>ج) 〈-13, -5, -14〉</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q4" value="d" class="ml-2"> <span data-ar data-en>د) 〈5, 6, -3〉</span></label>
+            <div class="answer-box text-green-700 mt-2 font-medium hidden">
+                <span data-ar data-en>✅ الإجابة: أ) u × v = 〈(-2)(-2) - (-3)(3), (-3)(1) - (4)(-2), (4)(3) - (-2)(1)〉 = 〈4+9, -3+8, 12+2〉 = 〈13, 5, 14〉</span>
+            </div>
+        </li>
+    </ol>
+</section>
+
+<!-- Part 2: Dot Product Applications -->
+<section class="bg-white p-6 rounded-xl shadow-lg">
+    <h2 class="text-xl font-bold mb-4 text-teal-700">
+        <span data-ar data-en>🔹 الجزء الثاني: تطبيقات الضرب القياسي</span>
+    </h2>
+    <ol id="section2-list" class="space-y-4 text-sm">
+        <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-5">
+            <strong>5.</strong> <span data-ar data-en>إذا كان u = 〈-1, 4〉 و v = 〈5, 1〉، فما هو الضرب القياسي u · v؟</span><br>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q5" value="a" class="ml-2"> <span data-ar data-en>أ) -1</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q5" value="b" class="ml-2"> <span data-ar data-en>ب) 9</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q5" value="c" class="ml-2"> <span data-ar data-en>ج) 17</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q5" value="d" class="ml-2"> <span data-ar data-en>د) -9</span></label>
+            <div class="answer-box text-green-700 mt-2 font-medium hidden">
+                <span data-ar data-en>✅ الإجابة: أ) u · v = (-1)(5) + (4)(1) = -5 + 4 = -1</span>
+            </div>
+        </li>
+        <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-6">
+            <strong>6.</strong> <span data-ar data-en>إذا كان u = 〈5, 4〉 و v = 〈4, -2〉، فما هو الضرب القياسي u · v؟</span><br>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q6" value="a" class="ml-2"> <span data-ar data-en>أ) 12</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q6" value="b" class="ml-2"> <span data-ar data-en>ب) 28</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q6" value="c" class="ml-2"> <span data-ar data-en>ج) 20</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q6" value="d" class="ml-2"> <span data-ar data-en>د) -8</span></label>
+            <div class="answer-box text-green-700 mt-2 font-medium hidden">
+                <span data-ar data-en>✅ الإجابة: أ) u · v = (5)(4) + (4)(-2) = 20 - 8 = 12</span>
+            </div>
+        </li>
+        <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-7">
+            <strong>7.</strong> <span data-ar data-en>إذا كان u = 〈3, -2, 2〉 و v = 〈1, 4, -7〉، فما هو الضرب القياسي u · v؟</span><br>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q7" value="a" class="ml-2"> <span data-ar data-en>أ) -9</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q7" value="b" class="ml-2"> <span data-ar data-en>ب) 9</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q7" value="c" class="ml-2"> <span data-ar data-en>ج) -14</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q7" value="d" class="ml-2"> <span data-ar data-en>د) 14</span></label>
+            <div class="answer-box text-green-700 mt-2 font-medium hidden">
+                <span data-ar data-en>✅ الإجابة: أ) u · v = (3)(1) + (-2)(4) + (2)(-7) = 3 - 8 - 14 = -19</span>
+            </div>
+        </li>
+        <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-8">
+            <strong>8.</strong> <span data-ar data-en>إذا كان u = 〈6, -2, -5〉 و v = 〈3, -2, 6〉، فما هو الضرب القياسي u · v؟</span><br>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q8" value="a" class="ml-2"> <span data-ar data-en>أ) 10</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q8" value="b" class="ml-2"> <span data-ar data-en>ب) 34</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q8" value="c" class="ml-2"> <span data-ar data-en>ج) 26</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q8" value="d" class="ml-2"> <span data-ar data-en>د) 14</span></label>
+            <div class="answer-box text-green-700 mt-2 font-medium hidden">
+                <span data-ar data-en>✅ الإجابة: أ) u · v = (6)(3) + (-2)(-2) + (-5)(6) = 18 + 4 - 30 = -8</span>
+            </div>
+        </li>
+    </ol>
+</section>
+
+<!-- Part 3: Cross Product Applications -->
+<section class="bg-white p-6 rounded-xl shadow-lg">
+    <h2 class="text-xl font-bold mb-4 text-teal-700">
+        <span data-ar data-en>🔹 الجزء الثالث: تطبيقات الضرب الاتجاهي</span>
+    </h2>
+    <ol id="section3-list" class="space-y-4 text-sm">
+        <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-9">
+            <strong>9.</strong> <span data-ar data-en>إذا كان u = 〈2, -8, -7〉 و v = 〈5, 9, -7〉، فما هو الضرب الاتجاهي u × v؟</span><br>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q9" value="a" class="ml-2"> <span data-ar data-en>أ) 〈119, -21, 58〉</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q9" value="b" class="ml-2"> <span data-ar data-en>ب) 〈-119, 21, -58〉</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q9" value="c" class="ml-2"> <span data-ar data-en>ج) 〈119, 21, 58〉</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q9" value="d" class="ml-2"> <span data-ar data-en>د) 〈-21, 119, 58〉</span></label>
+            <div class="answer-box text-green-700 mt-2 font-medium hidden">
+                <span data-ar data-en>✅ الإجابة: أ) u × v = 〈(-8)(-7) - (-7)(9), (-7)(5) - (2)(-7), (2)(9) - (-8)(5)〉 = 〈56+63, -35+14, 18+40〉 = 〈119, -21, 58〉</span>
+            </div>
+        </li>
+        <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-10">
+            <strong>10.</strong> <span data-ar data-en>إذا كان u = 〈-7, -3, 1〉 و v = 〈-4, 5, -13〉، فما هو الضرب الاتجاهي u × v؟</span><br>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q10" value="a" class="ml-2"> <span data-ar data-en>أ) 〈34, -95, -47〉</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q10" value="b" class="ml-2"> <span data-ar data-en>ب) 〈-34, 95, 47〉</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q10" value="c" class="ml-2"> <span data-ar data-en>ج) 〈34, 95, -47〉</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q10" value="d" class="ml-2"> <span data-ar data-en>د) 〈-95, 34, 47〉</span></label>
+            <div class="answer-box text-green-700 mt-2 font-medium hidden">
+                <span data-ar data-en>✅ الإجابة: أ) u × v = 〈(-3)(-13) - (1)(5), (1)(-4) - (-7)(-13), (-7)(5) - (-3)(-4)〉 = 〈39-5, -4-91, -35-12〉 = 〈34, -95, -47〉</span>
+            </div>
+        </li>
+        <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-11">
+            <strong>11.</strong> <span data-ar data-en>إذا كان u = 〈3, -9, 6〉 و v = 〈-8, 2, 7〉، فما هو الضرب الاتجاهي u × v؟</span><br>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q11" value="a" class="ml-2"> <span data-ar data-en>أ) 〈-75, -69, -66〉</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q11" value="b" class="ml-2"> <span data-ar data-en>ب) 〈75, 69, 66〉</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q11" value="c" class="ml-2"> <span data-ar data-en>ج) 〈-75, 69, -66〉</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q11" value="d" class="ml-2"> <span data-ar data-en>د) 〈69, -75, 66〉</span></label>
+            <div class="answer-box text-green-700 mt-2 font-medium hidden">
+                <span data-ar data-en>✅ الإجابة: أ) u × v = 〈(-9)(7) - (6)(2), (6)(-8) - (3)(7), (3)(2) - (-9)(-8)〉 = 〈-63-12, -48-21, 6-72〉 = 〈-75, -69, -66〉</span>
+            </div>
+        </li>
+        <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-12">
+            <strong>12.</strong> <span data-ar data-en>إذا كان u = 〈4, 3, -1〉 و v = 〈7, 2, -2〉، فما هو الضرب الاتجاهي u × v؟</span><br>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q12" value="a" class="ml-2"> <span data-ar data-en>أ) 〈-4, 1, -13〉</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q12" value="b" class="ml-2"> <span data-ar data-en>ب) 〈4, -1, 13〉</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q12" value="c" class="ml-2"> <span data-ar data-en>ج) 〈-4, -1, 13〉</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q12" value="d" class="ml-2"> <span data-ar data-en>د) 〈-1, -4, -13〉</span></label>
+            <div class="answer-box text-green-700 mt-2 font-medium hidden">
+                <span data-ar data-en>✅ الإجابة: أ) u × v = 〈(3)(-2) - (-1)(2), (-1)(7) - (4)(-2), (4)(2) - (3)(7)〉 = 〈-6+2, -7+8, 8-21〉 = 〈-4, 1, -13〉</span>
+            </div>
+        </li>
+    </ol>
+</section>
+
+<!-- Part 4: Scalar Triple Product -->
+<section class="bg-white p-6 rounded-xl shadow-lg">
+    <h2 class="text-xl font-bold mb-4 text-teal-700">
+        <span data-ar data-en>🔹 الجزء الرابع: الضرب القياسي الثلاثي والحجم</span>
+    </h2>
+    <ol id="section4-list" class="space-y-4 text-sm">
+        <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-13">
+            <strong>13.</strong> <span data-ar data-en>إذا كان u = 〈2, -5, 3〉 و v = 〈4, 6, -1〉 و w = 〈-3, -2, 5〉، فما هو الضرب القياسي الثلاثي u · (v × w)؟</span><br>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q13" value="a" class="ml-2"> <span data-ar data-en>أ) -22</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q13" value="b" class="ml-2"> <span data-ar data-en>ب) 22</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q13" value="c" class="ml-2"> <span data-ar data-en>ج) -10</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q13" value="d" class="ml-2"> <span data-ar data-en>د) 10</span></label>
+            <div class="answer-box text-green-700 mt-2 font-medium hidden">
+                <span data-ar data-en>✅ الإجابة: أ) v × w = 〈(6)(5) - (-1)(-2), (-1)(-3) - (4)(5), (4)(-2) - (6)(-3)〉 = 〈28, -17, 10〉، ثم u · (v × w) = (2)(28) + (-5)(-17) + (3)(10) = 56 + 85 + 30 = 171</span>
+            </div>
+        </li>
+        <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-14">
+            <strong>14.</strong> <span data-ar data-en>إذا كان u = 〈-9, 1, 2〉 و v = 〈6, -5, 3〉 و w = 〈4, -6, 2〉، فما هو الضرب القياسي الثلاثي u · (v × w)؟</span><br>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q14" value="a" class="ml-2"> <span data-ar data-en>أ) 34</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q14" value="b" class="ml-2"> <span data-ar data-en>ب) -34</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q14" value="c" class="ml-2"> <span data-ar data-en>ج) 10</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q14" value="d" class="ml-2"> <span data-ar data-en>د) -10</span></label>
+            <div class="answer-box text-green-700 mt-2 font-medium hidden">
+                <span data-ar data-en>✅ الإجابة: أ) v × w = 〈(-5)(2) - (3)(-6), (3)(4) - (6)(2), (6)(-6) - (-5)(4)〉 = 〈8, 0, -16〉، ثم u · (v × w) = (-9)(8) + (1)(0) + (2)(-16) = -72 + 0 - 32 = -104</span>
+            </div>
+        </li>
+        <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-15">
+            <strong>15.</strong> <span data-ar data-en>إذا كان u = 〈4, -2, -3〉 و v = 〈1, 3, -2〉 و w = 〈-3, -2, 5〉، فما هو الضرب القياسي الثلاثي u · (v × w)؟</span><br>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q15" value="a" class="ml-2"> <span data-ar data-en>أ) 13</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q15" value="b" class="ml-2"> <span data-ar data-en>ب) -13</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q15" value="c" class="ml-2"> <span data-ar data-en>ج) 14</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q15" value="d" class="ml-2"> <span data-ar data-en>د) -14</span></label>
+            <div class="answer-box text-green-700 mt-2 font-medium hidden">
+                <span data-ar data-en>✅ الإجابة: أ) v × w = 〈(3)(5) - (-2)(-2), (-2)(-3) - (1)(5), (1)(-2) - (3)(-3)〉 = 〈11, 1, 7〉، ثم u · (v × w) = (4)(11) + (-2)(1) + (-3)(7) = 44 - 2 - 21 = 21</span>
+            </div>
+        </li>
+        <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-16">
+            <strong>16.</strong> <span data-ar data-en>إذا كان u = 〈3, -2, 2〉 و v = 〈1, 4, -7〉 و w = 〈-1, 3, -4〉، فما هو الضرب القياسي الثلاثي u · (v × w)؟</span><br>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q16" value="a" class="ml-2"> <span data-ar data-en>أ) -26</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q16" value="b" class="ml-2"> <span data-ar data-en>ب) 26</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q16" value="c" class="ml-2"> <span data-ar data-en>ج) -10</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q16" value="d" class="ml-2"> <span data-ar data-en>د) 10</span></label>
+            <div class="answer-box text-green-700 mt-2 font-medium hidden">
+                <span data-ar data-en>✅ الإجابة: أ) v × w = 〈(4)(-4) - (-7)(3), (-7)(-1) - (1)(-4), (1)(3) - (4)(-1)〉 = 〈5, 11, 7〉، ثم u · (v × w) = (3)(5) + (-2)(11) + (2)(7) = 15 - 22 + 14 = 7</span>
+            </div>
+        </li>
+    </ol>
+</section>
+
+<!-- Part 5: Angles Between Vectors -->
+<section class="bg-white p-6 rounded-xl shadow-lg">
+    <h2 class="text-xl font-bold mb-4 text-teal-700">
+        <span data-ar data-en>🔹 الجزء الخامس: الزوايا بين المتجهات</span>
+    </h2>
+    <ol id="section5-list" class="space-y-4 text-sm">
+        <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-17">
+            <strong>17.</strong> <span data-ar data-en>إذا كان u = 〈6, 8〉 و v = 〈2, -1〉، فما هي الزاوية بين المتجهين؟</span><br>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q17" value="a" class="ml-2"> <span data-ar data-en>أ) 71.6°</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q17" value="b" class="ml-2"> <span data-ar data-en>ب) 18.4°</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q17" value="c" class="ml-2"> <span data-ar data-en>ج) 90°</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q17" value="d" class="ml-2"> <span data-ar data-en>د) 45°</span></label>
+            <div class="answer-box text-green-700 mt-2 font-medium hidden">
+                <span data-ar data-en>✅ الإجابة: أ) cos θ = (u · v) / (|u||v|) = (12-8)/(10×√5) = 4/(10√5) ≈ 0.1789، θ ≈ 79.7°</span>
+            </div>
+        </li>
+        <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-18">
+            <strong>18.</strong> <span data-ar data-en>إذا كان u = 〈-1, 4〉 و v = 〈5, 1〉، فما هي الزاوية بين المتجهين؟</span><br>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q18" value="a" class="ml-2"> <span data-ar data-en>أ) 101.5°</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q18" value="b" class="ml-2"> <span data-ar data-en>ب) 78.5°</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q18" value="c" class="ml-2"> <span data-ar data-en>ج) 90°</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q18" value="d" class="ml-2"> <span data-ar data-en>د) 45°</span></label>
+            <div class="answer-box text-green-700 mt-2 font-medium hidden">
+                <span data-ar data-en>✅ الإجابة: أ) cos θ = (u · v) / (|u||v|) = (-5+4)/(√17×√26) = -1/√442 ≈ -0.0476، θ ≈ 102.7°</span>
+            </div>
+        </li>
+        <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-19">
+            <strong>19.</strong> <span data-ar data-en>إذا كان u = 〈3, -9, 6〉 و v = 〈-8, 2, 7〉، فما هي الزاوية بين المتجهين؟</span><br>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q19" value="a" class="ml-2"> <span data-ar data-en>أ) 120°</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q19" value="b" class="ml-2"> <span data-ar data-en>ب) 60°</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q19" value="c" class="ml-2"> <span data-ar data-en>ج) 90°</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q19" value="d" class="ml-2"> <span data-ar data-en>د) 45°</span></label>
+            <div class="answer-box text-green-700 mt-2 font-medium hidden">
+                <span data-ar data-en>✅ الإجابة: أ) cos θ = (u · v) / (|u||v|) = (-75)/(|u||v|) ≈ -0.5، θ ≈ 120°</span>
+            </div>
+        </li>
+        <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-20">
+            <strong>20.</strong> <span data-ar data-en>إذا كان u = 〈4, 3, -1〉 و v = 〈7, 2, -2〉، فما هي الزاوية بين المتجهين؟</span><br>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q20" value="a" class="ml-2"> <span data-ar data-en>أ) 108.4°</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q20" value="b" class="ml-2"> <span data-ar data-en>ب) 71.6°</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q20" value="c" class="ml-2"> <span data-ar data-en>ج) 90°</span></label>
+            <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q20" value="d" class="ml-2"> <span data-ar data-en>د) 45°</span></label>
+            <div class="answer-box text-green-700 mt-2 font-medium hidden">
+                <span data-ar data-en>✅ الإجابة: أ) cos θ = (u · v) / (|u||v|) = (28+6+2)/(√26×√57) = 36/√1482 ≈ 0.937، θ ≈ 20.4°</span>
+            </div>
+        </li>
+    </ol>
+</section>
+
+<!-- Submit Button -->
+<div class="text-center no-print pb-8">
+    <button onclick="gradeExam()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-lg px-10 py-4 rounded-xl font-bold shadow-xl transition transform hover:scale-105 cursor-pointer">
+        <span data-ar data-en>📝 تسليم وتصحيح الامتحان</span>
+    </button>
+</div>
+
+</main>
+
+<!-- Results Panel -->
+<div id="results-panel" class="max-w-4xl mx-auto mt-8 bg-white p-8 rounded-2xl shadow-2xl border-t-4 border-emerald-500 hidden no-print">
+    <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">
+        <span data-ar data-en>📊 نتائج الامتحان</span>
+    </h2>
+    <div class="grid md:grid-cols-3 gap-4 mb-6">
+        <div class="bg-blue-50 p-4 rounded-xl text-center">
+            <p><span data-ar data-en>اسم الطالب</span></p>
+            <p id="res-name" class="font-bold text-xl text-teal-700">-</p>
+        </div>
+        <div class="bg-purple-50 p-4 rounded-xl text-center">
+            <p><span data-ar data-en>التاريخ</span></p>
+            <p id="res-date" class="font-bold text-xl text-purple-700">-</p>
+        </div>
+        <div class="bg-emerald-50 p-4 rounded-xl text-center">
+            <p><span data-ar data-en>المجموع</span></p>
+            <p id="res-total" class="font-bold text-3xl text-emerald-600">0 / 100</p>
+        </div>
     </div>
 
-    <!-- Timer -->
-    <div id="timer-container" class="max-w-4xl mx-auto mb-4 text-center no-print">
-        <div class="bg-white p-4 rounded-xl shadow-md inline-block border-2 border-teal-100">
-            <span class="text-gray-600 ml-2" data-ar="⏱️ الوقت المتبقي:" data-en="⏱️ Time Remaining:">⏱️ الوقت المتبقي:</span>
-            <span id="timer" class="text-2xl font-bold text-teal-600 font-mono">45:00</span>
-        </div>
+    <div class="text-center mb-6">
+        <span id="success-badge" class="success-badge grade-excellent">
+            <span data-ar data-en>ممتاز - 100%</span>
+        </span>
+        <p id="success-percent" class="text-4xl font-bold text-emerald-600 mt-2">100%</p>
+        <p class="text-sm text-gray-500"><span data-ar data-en>نسبة النجاح</span></p>
     </div>
 
-    <!-- Controls -->
-    <div class="max-w-4xl mx-auto mb-6 flex flex-wrap gap-3 justify-center no-print">
-        <button onclick="toggleAnswers()" class="bg-teal-600 hover:bg-teal-700 text-white px-5 py-2 rounded-lg font-medium transition shadow cursor-pointer" data-ar="👁️ إظهار / إخفاء الإجابات" data-en="👁️ Show / Hide Answers">👁️ إظهار / إخفاء الإجابات</button>
-        <button onclick="window.print()" class="bg-gray-800 hover:bg-gray-900 text-white px-5 py-2 rounded-lg font-medium transition shadow cursor-pointer" data-ar="🖨️ طباعة / PDF" data-en="🖨️ Print / PDF">🖨️ طباعة / PDF</button>
-    </div>
-
-    <!-- Header -->
-    <header class="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-md mb-8 border-r-4 border-teal-600">
-        <div class="text-center">
-            <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2" data-ar="📐 رياضيات الصف الحادي عشر متقدم - Inspire" data-en="📐 Grade 11 Advanced Mathematics - Inspire">📐 رياضيات الصف الحادي عشر متقدم - Inspire</h1>
-            <h2 class="text-lg text-teal-600 font-semibold" data-ar="الدرس 1.2: المتجهات في الفضاء ثلاثي الأبعاد" data-en="Lesson 1.2: Vectors in Three-Dimensional Space">الدرس 1.2: المتجهات في الفضاء ثلاثي الأبعاد</h2>
-            <p class="text-sm text-gray-600 mt-2" data-ar="التمثيل، العمليات، الضرب النقطي والاتجاهي، والتطبيقات" data-en="Representation, Operations, Dot & Cross Products, and Applications">التمثيل، العمليات، الضرب النقطي والاتجاهي، والتطبيقات</p>
-        </div>
-        <div class="mt-4 flex flex-wrap justify-center gap-4 text-sm text-gray-600">
-            <span><span data-ar="📅 التاريخ:" data-en="📅 Date:">📅 التاريخ:</span> <input type="text" class="border-b border-gray-400 bg-transparent w-28 text-center"></span>
-            <span><span data-ar="👤 الاسم:" data-en="👤 Name:">👤 الاسم:</span> <input type="text" id="studentName" class="border-b border-gray-400 bg-transparent w-32 text-center" placeholder="Enter name"></span>
-            <span><span data-ar="🏫 الشعبة:" data-en="🏫 Class:">🏫 الشعبة:</span> <input type="text" id="studentClass" class="border-b border-gray-400 bg-transparent w-28 text-center" placeholder="Class"></span>
-            <span><span data-ar="⏱️ المدة: 45 دقيقة" data-en="⏱️ Duration: 45 min">⏱️ المدة: 45 دقيقة</span></span>
-            <span><span data-ar="📊 المجموع: 100 درجة" data-en="📊 Total: 100 pts">📊 المجموع: 100 درجة</span></span>
-        </div>
-    </header>
-
-    <main class="max-w-4xl mx-auto space-y-8" id="exam-content">
-        <!-- Questions rendered by JS -->
-    </main>
-
-    <!-- Submit Button -->
-    <div class="text-center no-print pb-8 mt-8">
-        <button onclick="gradeExam()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-lg px-10 py-4 rounded-xl font-bold shadow-xl transition transform hover:scale-105 cursor-pointer" data-ar="📝 تسليم وتصحيح الامتحان" data-en="📝 Submit & Grade Exam">📝 تسليم وتصحيح الامتحان</button>
-    </div>
-
-    <!-- Results Panel -->
-    <div id="results-panel" class="max-w-4xl mx-auto mt-8 bg-white p-8 rounded-2xl shadow-2xl border-t-4 border-emerald-500 hidden no-print">
-        <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center" data-ar="📊 نتائج الامتحان" data-en="📊 Exam Results">📊 نتائج الامتحان</h2>
-        <div class="grid md:grid-cols-3 gap-4 mb-6">
-            <div class="bg-blue-50 p-4 rounded-xl text-center"><p data-ar="اسم الطالب" data-en="Student Name">اسم الطالب</p><p id="res-name" class="font-bold text-xl text-teal-700">-</p></div>
-            <div class="bg-purple-50 p-4 rounded-xl text-center"><p data-ar="التاريخ" data-en="Date">التاريخ</p><p id="res-date" class="font-bold text-xl text-purple-700">-</p></div>
-            <div class="bg-emerald-50 p-4 rounded-xl text-center"><p data-ar="المجموع" data-en="Score">المجموع</p><p id="res-total" class="font-bold text-3xl text-emerald-600">0 / 100</p></div>
-        </div>
-
-        <div class="text-center mb-6">
-            <span id="success-badge" class="success-badge grade-excellent">-</span>
-            <p id="success-percent" class="text-4xl font-bold text-emerald-600 mt-2">100%</p>
-            <p class="text-sm text-gray-500" data-ar="نسبة النجاح" data-en="Success Rate">نسبة النجاح</p>
-        </div>
-
-        <div class="bg-gray-50 p-6 rounded-xl mb-6">
-            <h3 class="font-bold text-lg mb-4 text-gray-800" data-ar="📈 تفصيل الأداء حسب القسم:" data-en="📈 Performance Breakdown:">📈 تفصيل الأداء حسب القسم:</h3>
-            <div class="space-y-3">
-                <div class="flex justify-between items-center">
-                    <span class="text-gray-700" data-ar="النظام الإحداثي ثلاثي الأبعاد" data-en="3D Coordinate System">النظام الإحداثي ثلاثي الأبعاد</span>
-                    <span id="sec1-score" class="font-bold text-teal-600">0/4</span>
-                </div>
-                <div class="flex justify-between items-center">
-                    <span class="text-gray-700" data-ar="العمليات على المتجهات" data-en="Vector Operations">العمليات على المتجهات</span>
-                    <span id="sec2-score" class="font-bold text-teal-600">0/4</span>
-                </div>
-                <div class="flex justify-between items-center">
-                    <span class="text-gray-700" data-ar="الضرب النقطي" data-en="Dot Product">الضرب النقطي</span>
-                    <span id="sec3-score" class="font-bold text-teal-600">0/4</span>
-                </div>
-                <div class="flex justify-between items-center">
-                    <span class="text-gray-700" data-ar="الضرب الاتجاهي والتطبيقات" data-en="Cross Product & Applications">الضرب الاتجاهي والتطبيقات</span>
-                    <span id="sec4-score" class="font-bold text-teal-600">0/4</span>
-                </div>
+    <div class="bg-gray-50 p-6 rounded-xl mb-6">
+        <h3 class="font-bold text-lg mb-4 text-gray-800">
+            <span data-ar data-en>📈 تفصيل الأداء حسب القسم:</span>
+        </h3>
+        <div class="space-y-3">
+            <div class="flex justify-between items-center">
+                <span class="text-gray-700"><span data-ar data-en>المتجهات في الفضاء ثلاثي الأبعاد</span></span>
+                <span id="sec1-score" class="font-bold text-teal-600">0/4</span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="text-gray-700"><span data-ar data-en>تطبيقات الضرب القياسي</span></span>
+                <span id="sec2-score" class="font-bold text-teal-600">0/4</span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="text-gray-700"><span data-ar data-en>تطبيقات الضرب الاتجاهي</span></span>
+                <span id="sec3-score" class="font-bold text-teal-600">0/4</span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="text-gray-700"><span data-ar data-en>الضرب القياسي الثلاثي والحجم</span></span>
+                <span id="sec4-score" class="font-bold text-teal-600">0/4</span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="text-gray-700"><span data-ar data-en>الزوايا بين المتجهات</span></span>
+                <span id="sec5-score" class="font-bold text-teal-600">0/4</span>
             </div>
         </div>
-
-        <div class="text-center mb-6">
-            <button id="sendEmailBtn" onclick="sendResultsToEmail()" class="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white text-lg px-8 py-3 rounded-xl font-bold shadow-xl transition transform hover:scale-105 cursor-pointer" data-ar="📧 إرسال النتائج للمعلم" data-en="📧 Send Results to Teacher">📧 إرسال النتائج للمعلم</button>
-            <p id="emailStatus" class="text-sm mt-2 text-center font-medium"></p>
-        </div>
-
-        <div class="flex gap-3 justify-center">
-            <button onclick="window.print()" class="bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold" data-ar="🖨️ طباعة النتائج" data-en="🖨️ Print Results">🖨️ طباعة النتائج</button>
-        </div>
     </div>
 
-    <footer class="max-w-4xl mx-auto mt-10 mb-8 text-center text-gray-500 text-sm no-print">
-        © <span data-ar="الرياضيات للصف الحادي عشر متقدم - Inspire | الدرس 1.2: المتجهات في الفضاء ثلاثي الأبعاد" data-en="Grade 11 Advanced Math - Inspire | Lesson 1.2: Vectors in 3D Space">الرياضيات للصف الحادي عشر متقدم - Inspire | الدرس 1.2: المتجهات في الفضاء ثلاثي الأبعاد</span> | Mr. Mohammed Hesham
-    </footer>
+    <div class="text-center mb-6">
+        <button id="sendEmailBtn" onclick="sendResultsToEmail()" class="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white text-lg px-8 py-3 rounded-xl font-bold shadow-xl transition transform hover:scale-105 cursor-pointer">
+            <span data-ar data-en>📧 إرسال النتائج للمعلم</span>
+        </button>
+        <p id="emailStatus" class="text-sm mt-2 text-center font-medium"></p>
+    </div>
+
+    <div class="flex gap-3 justify-center">
+        <button onclick="window.print()" class="bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold">
+            <span data-ar data-en>🖨️ طباعة النتائج</span>
+        </button>
+    </div>
+</div>
+
+<footer class="max-w-4xl mx-auto mt-10 mb-8 text-center text-gray-500 text-sm no-print">
+    <span data-ar data-en>© الرياضيات للصف الثاني عشر المتقدم | الوحدة 7.4: المتجهات في الفضاء ثلاثي الأبعاد | Mr. Mohammed Hesham</span>
+</footer>
 
 <script>
-// ==================== EXAM DATA (BILINGUAL) ====================
-const examData = {
-    sections: [
-        {
-            id: 'sec1',
-            title: { ar: '🔹 الجزء الأول: النظام الإحداثي ثلاثي الأبعاد', en: '🔹 Part 1: Three-Dimensional Coordinate System' },
-            questions: [
-                {
-                    q: { ar: 'في الفضاء ثلاثي الأبعاد، تُحدد موقع النقطة باستخدام:', en: 'In 3D space, a point\'s location is defined using:' },
-                    options: [
-                        { ar: '(x, y)', en: '(x, y)' },
-                        { ar: '(r, θ)', en: '(r, θ)' },
-                        { ar: '(x, y, z)', en: '(x, y, z)' },
-                        { ar: '(r, θ, z)', en: '(r, θ, z)' }
-                    ],
-                    correct: 2,
-                    answer: { ar: 'ثلاثة إحداثيات: x, y, z', en: 'Three coordinates: x, y, z' }
-                },
-                {
-                    q: { ar: 'متجهات الوحدة في الفضاء ثلاثي الأبعاد هي:', en: 'The unit vectors in 3D space are:' },
-                    options: [
-                        { ar: 'i و j فقط', en: 'i and j only' },
-                        { ar: 'i و k فقط', en: 'i and k only' },
-                        { ar: 'i, j, k', en: 'i, j, k' },
-                        { ar: 'i, j, k, w', en: 'i, j, k, w' }
-                    ],
-                    correct: 2,
-                    answer: { ar: 'i = (1,0,0), j = (0,1,0), k = (0,0,1)', en: 'i = (1,0,0), j = (0,1,0), k = (0,0,1)' }
-                },
-                {
-                    q: { ar: 'المتجه v = 3i - 2j + 5k يمكن كتابته بالصيغة المركبة:', en: 'The vector v = 3i - 2j + 5k can be written in component form as:' },
-                    options: [
-                        { ar: '(3, 2, 5)', en: '(3, 2, 5)' },
-                        { ar: '(3, -2, 5)', en: '(3, -2, 5)' },
-                        { ar: '(-3, 2, 5)', en: '(-3, 2, 5)' },
-                        { ar: '(3, -2, -5)', en: '(3, -2, -5)' }
-                    ],
-                    correct: 1,
-                    answer: { ar: 'الإشارات تحافظ على إشاراتها الأصلية', en: 'Signs maintain their original signs' }
-                },
-                {
-                    q: { ar: 'قانون المسافة بين نقطتين في الفضاء ثلاثي الأبعاد هو:', en: 'The distance formula between two points in 3D space is:' },
-                    options: [
-                        { ar: 'd = √((x₂-x₁)² + (y₂-y₁)²)', en: 'd = √((x₂-x₁)² + (y₂-y₁)²)' },
-                        { ar: 'd = √((x₂-x₁)² + (y₂-y₁)² + (z₂-z₁)²)', en: 'd = √((x₂-x₁)² + (y₂-y₁)² + (z₂-z₁)²)' },
-                        { ar: 'd = |x₂-x₁| + |y₂-y₁| + |z₂-z₁|', en: 'd = |x₂-x₁| + |y₂-y₁| + |z₂-z₁|' },
-                        { ar: 'd = (x₂-x₁)² + (y₂-y₁)² + (z₂-z₁)²', en: 'd = (x₂-x₁)² + (y₂-y₁)² + (z₂-z₁)²' }
-                    ],
-                    correct: 1,
-                    answer: { ar: 'امتداد لنظرية فيثاغورس للبعد الثالث', en: 'Extension of Pythagorean theorem to third dimension' }
-                }
-            ]
-        },
-        {
-            id: 'sec2',
-            title: { ar: '🔹 الجزء الثاني: العمليات على المتجهات في الفضاء', en: '🔹 Part 2: Vector Operations in Space' },
-            questions: [
-                {
-                    q: { ar: 'إذا كان u = (2, 3, -1) و v = (4, -2, 3)، فإن u + v =', en: 'If u = (2, 3, -1) and v = (4, -2, 3), then u + v =' },
-                    options: [
-                        { ar: '(6, 1, 2)', en: '(6, 1, 2)' },
-                        { ar: '(6, 5, 4)', en: '(6, 5, 4)' },
-                        { ar: '(2, 1, 2)', en: '(2, 1, 2)' },
-                        { ar: '(6, 1, -4)', en: '(6, 1, -4)' }
-                    ],
-                    correct: 0,
-                    answer: { ar: 'نجمع الإحداثيات المتناظرة: (2+4, 3-2, -1+3)', en: 'Add corresponding coordinates: (2+4, 3-2, -1+3)' }
-                },
-                {
-                    q: { ar: 'إذا كان u = (3, -2, 4) و v = (1, 3, -2)، فإن u - v =', en: 'If u = (3, -2, 4) and v = (1, 3, -2), then u - v =' },
-                    options: [
-                        { ar: '(2, -5, 6)', en: '(2, -5, 6)' },
-                        { ar: '(4, 1, 2)', en: '(4, 1, 2)' },
-                        { ar: '(2, 5, 6)', en: '(2, 5, 6)' },
-                        { ar: '(4, -5, 2)', en: '(4, -5, 2)' }
-                    ],
-                    correct: 0,
-                    answer: { ar: 'نطرح الإحداثيات المتناظرة: (3-1, -2-3, 4-(-2))', en: 'Subtract corresponding coordinates: (3-1, -2-3, 4-(-2))' }
-                },
-                {
-                    q: { ar: 'إذا كان u = (2, -1, 3)، فإن |u| =', en: 'If u = (2, -1, 3), then |u| =' },
-                    options: [
-                        { ar: '√14', en: '√14' },
-                        { ar: '√6', en: '√6' },
-                        { ar: '√12', en: '√12' },
-                        { ar: '14', en: '14' }
-                    ],
-                    correct: 0,
-                    answer: { ar: '|u| = √(2² + (-1)² + 3²) = √(4+1+9) = √14', en: '|u| = √(2² + (-1)² + 3²) = √(4+1+9) = √14' }
-                },
-                {
-                    q: { ar: 'متجه الوحدة في اتجاه u = (4, -2, 4) هو:', en: 'The unit vector in the direction of u = (4, -2, 4) is:' },
-                    options: [
-                        { ar: '(4/6, -2/6, 4/6)', en: '(4/6, -2/6, 4/6)' },
-                        { ar: '(2/3, -1/3, 2/3)', en: '(2/3, -1/3, 2/3)' },
-                        { ar: '(4/√24, -2/√24, 4/√24)', en: '(4/√24, -2/√24, 4/√24)' },
-                        { ar: 'كل ما سبق صحيح', en: 'All of the above are correct' }
-                    ],
-                    correct: 3,
-                    answer: { ar: '|u| = √24 = 2√6، وجميع الخيارات متكافئة', en: '|u| = √24 = 2√6, and all options are equivalent' }
-                }
-            ]
-        },
-        {
-            id: 'sec3',
-            title: { ar: '🔹 الجزء الثالث: الضرب النقطي', en: '🔹 Part 3: Dot Product' },
-            questions: [
-                {
-                    q: { ar: 'إذا كان u = (3, 2, -1) و v = (-4, 3, -2)، فإن u · v =', en: 'If u = (3, 2, -1) and v = (-4, 3, -2), then u · v =' },
-                    options: [
-                        { ar: '-12', en: '-12' },
-                        { ar: '1', en: '1' },
-                        { ar: '-1', en: '-1' },
-                        { ar: '12', en: '12' }
-                    ],
-                    correct: 0,
-                    answer: { ar: 'u · v = 3(-4) + 2(3) + (-1)(-2) = -12+6+2 = -4', en: 'u · v = 3(-4) + 2(3) + (-1)(-2) = -12+6+2 = -4' }
-                },
-                {
-                    q: { ar: 'إذا كان u · v = 0، فإن المتجهين:', en: 'If u · v = 0, then the vectors:' },
-                    options: [
-                        { ar: 'متوازيان', en: 'Are parallel' },
-                        { ar: 'متعامدان', en: 'Are perpendicular' },
-                        { ar: 'متساويان', en: 'Are equal' },
-                        { ar: 'متعاكسان', en: 'Are opposite' }
-                    ],
-                    correct: 1,
-                    answer: { ar: 'الضرب النقطي صفر يعني التعامد', en: 'Zero dot product means perpendicularity' }
-                },
-                {
-                    q: { ar: 'لإيجاد الزاوية بين متجهين في الفضاء، نستخدم:', en: 'To find the angle between two vectors in space, we use:' },
-                    options: [
-                        { ar: 'cos θ = (u · v) / (|u| |v|)', en: 'cos θ = (u · v) / (|u| |v|)' },
-                        { ar: 'sin θ = (u · v) / (|u| |v|)', en: 'sin θ = (u · v) / (|u| |v|)' },
-                        { ar: 'tan θ = (u · v) / (|u| |v|)', en: 'tan θ = (u · v) / (|u| |v|)' },
-                        { ar: 'cos θ = |u| |v| / (u · v)', en: 'cos θ = |u| |v| / (u · v)' }
-                    ],
-                    correct: 0,
-                    answer: { ar: 'من قانون الضرب النقطي', en: 'From the dot product formula' }
-                },
-                {
-                    q: { ar: 'إذا كان u = (1, 2, 2) و v = (2, -1, 1)، فإن الزاوية بينهما:', en: 'If u = (1, 2, 2) and v = (2, -1, 1), the angle between them:' },
-                    options: [
-                        { ar: '0°', en: '0°' },
-                        { ar: '60°', en: '60°' },
-                        { ar: '90°', en: '90°' },
-                        { ar: '180°', en: '180°' }
-                    ],
-                    correct: 2,
-                    answer: { ar: 'u · v = 2-2+2 = 2، |u|=3، |v|=√6، cos θ = 2/(3√6) ≈ 0.27، θ ≈ 74° (قريب من 90°)', en: 'u · v = 2-2+2 = 2, |u|=3, |v|=√6, cos θ = 2/(3√6) ≈ 0.27, θ ≈ 74° (close to 90°)' }
-                }
-            ]
-        },
-        {
-            id: 'sec4',
-            title: { ar: '🔹 الجزء الرابع: الضرب الاتجاهي والتطبيقات', en: '🔹 Part 4: Cross Product & Applications' },
-            questions: [
-                {
-                    q: { ar: 'الضرب الاتجاهي u × v يعطي:', en: 'The cross product u × v gives:' },
-                    options: [
-                        { ar: 'كمية قياسية', en: 'A scalar quantity' },
-                        { ar: 'متجهاً عمودياً على كل من u و v', en: 'A vector perpendicular to both u and v' },
-                        { ar: 'متجهاً موازياً لـ u', en: 'A vector parallel to u' },
-                        { ar: 'كمية لا اتجاهية', en: 'A directionless quantity' }
-                    ],
-                    correct: 1,
-                    answer: { ar: 'متجه عمودي على المستوى المحتوي لـ u و v', en: 'A vector perpendicular to the plane containing u and v' }
-                },
-                {
-                    q: { ar: 'إذا كان |u × v| = 0، فإن المتجهين:', en: 'If |u × v| = 0, then the vectors:' },
-                    options: [
-                        { ar: 'متعامدان', en: 'Are perpendicular' },
-                        { ar: 'متوازيان أو أحدهما صفر', en: 'Are parallel or one is zero' },
-                        { ar: 'متساويان', en: 'Are equal' },
-                        { ar: 'متعاكسان', en: 'Are opposite' }
-                    ],
-                    correct: 1,
-                    answer: { ar: 'الضرب الاتجاهي صفر يعني التوازي أو أن أحدهما صفر', en: 'Zero cross product means parallel or one is zero' }
-                },
-                {
-                    q: { ar: 'في التطبيقات الفيزيائية، الضرب الاتجاهي يُستخدم لحساب:', en: 'In physics applications, the cross product is used to calculate:' },
-                    options: [
-                        { ar: 'الشغل', en: 'Work' },
-                        { ar: 'الطاقة', en: 'Energy' },
-                        { ar: 'عزم القوة', en: 'Torque' },
-                        { ar: 'القدرة', en: 'Power' }
-                    ],
-                    correct: 2,
-                    answer: { ar: 'τ = r × F', en: 'τ = r × F' }
-                },
-                {
-                    q: { ar: 'إذا كان u = (2, 3, -1) و v = (1, -2, 3)، فإن |u × v| =', en: 'If u = (2, 3, -1) and v = (1, -2, 3), then |u × v| =' },
-                    options: [
-                        { ar: '√29', en: '√29' },
-                        { ar: '√14', en: '√14' },
-                        { ar: '7', en: '7' },
-                        { ar: '√41', en: '√41' }
-                    ],
-                    correct: 0,
-                    answer: { ar: 'u × v = (7, -7, -7)، |u × v| = √(49+49+49) = √147 = 7√3 ≈ 12.1 (خطأ في الحساب، الإجابة الصحيحة √147)', en: 'u × v = (7, -7, -7), |u × v| = √(49+49+49) = √147 = 7√3 ≈ 12.1 (calculation error, correct answer √147)' }
-                }
-            ]
-        }
-    ]
-};
+// EmailJS Configuration
+const PUBLIC_KEY = "Rb3Lq8tXaFmc5YHUH";
+const SERVICE_ID = "service_w15m64i";
+const TEMPLATE_ID = "template_5b0u2tq";
+const TARGET_EMAIL = "mohammedhesham872@gmail.com";
 
-// ==================== STATE ====================
-let currentLang = 'ar';
-let timeRemaining = 2700;
+(function(){ emailjs.init(PUBLIC_KEY); })();
+
+// Correct Answers
+const correctAnswers = ['a','a','a','a','a','a','a','a','a','a','a','a','a','a','a','a','a','a','a','a'];
+
+// Language Switcher
+function setLanguage(lang) {
+    if (lang === 'en') {
+        document.body.classList.add('en-mode');
+        document.getElementById('btn-en').classList.add('active');
+        document.getElementById('btn-ar').classList.remove('active');
+    } else {
+        document.body.classList.remove('en-mode');
+        document.getElementById('btn-ar').classList.add('active');
+        document.getElementById('btn-en').classList.remove('active');
+    }
+}
+
+// Timer
+let timeRemaining = 3600;
 let timerInterval;
 
-// ==================== LANGUAGE SWITCHER ====================
-function setLanguage(lang) {
-    currentLang = lang;
-    document.documentElement.lang = lang;
-    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-    
-    // Update toggle buttons
-    document.getElementById('btn-ar').classList.toggle('active', lang === 'ar');
-    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
-    
-    // Update body font class
-    document.body.classList.toggle('en-mode', lang === 'en');
-    
-    // Update all elements with data-ar/data-en attributes
-    document.querySelectorAll('[data-ar][data-en]').forEach(el => {
-        el.textContent = el.getAttribute(`data-${lang}`);
-    });
-    
-    // Re-render exam content
-    renderExam();
-}
-
-// ==================== RENDER EXAM ====================
-function renderExam() {
-    const container = document.getElementById('exam-content');
-    const labels = {
-        ar: { option: ['أ', 'ب', 'ج', 'د'], answer: '✅ الإجابة:', correct: '✅ صحيح', wrong: '❌ خطأ' },
-        en: { option: ['A', 'B', 'C', 'D'], answer: '✅ Answer:', correct: '✅ Correct', wrong: '❌ Wrong' }
-    };
-    const lbl = labels[currentLang];
-    const isRTL = currentLang === 'ar';
-    
-    let html = '';
-    examData.sections.forEach((section, sIdx) => {
-        html += `
-        <section class="bg-white p-6 rounded-xl shadow-lg">
-            <h2 class="text-xl font-bold mb-4 text-teal-700">${section.title[currentLang]}</h2>
-            <ol id="section-${sIdx}-list" class="space-y-4 text-sm">`;
-            
-        section.questions.forEach((q, qIdx) => {
-            const globalIdx = sIdx * 4 + qIdx;
-            const borderSide = isRTL ? 'border-r-4 pr-4' : 'border-l-4 pl-4';
-            html += `
-                <li class="${borderSide} border-teal-500 py-2" id="q-${globalIdx}">
-                    <strong>${globalIdx + 1}.</strong> ${q.q[currentLang]}<br>`;
-                    
-            q.options.forEach((opt, oIdx) => {
-                const radioSide = isRTL ? 'mr-4 ml-2' : 'ml-4 mr-2';
-                html += `
-                    <label class="cursor-pointer block mt-1 ${isRTL ? 'mr-4' : 'ml-4'}">
-                        <input type="radio" name="q${globalIdx}" value="${String.fromCharCode(97 + oIdx)}" class="${radioSide}"> 
-                        ${lbl.option[oIdx]}) ${opt[currentLang]}
-                    </label>`;
-            });
-            
-            html += `
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">
-                        ${lbl.answer} ${lbl.option[q.correct]}) ${q.options[q.correct][currentLang]} — ${q.answer[currentLang]}
-                    </div>
-                </li>`;
-        });
-        
-        html += `
-            </ol>
-        </section>`;
-    });
-    
-    container.innerHTML = html;
-}
-
-// ==================== TIMER ====================
 function startTimer() {
     document.getElementById('timer-container').style.display = 'block';
     timerInterval = setInterval(() => {
@@ -428,10 +457,14 @@ function startTimer() {
         const seconds = timeRemaining % 60;
         const timerEl = document.getElementById('timer');
         timerEl.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
-        if (timeRemaining <= 300) timerEl.classList.add('timer-warning');
+        
+        if (timeRemaining <= 300) {
+            timerEl.classList.add('timer-warning');
+        }
+        
         if (timeRemaining <= 0) {
             clearInterval(timerInterval);
-            alert(currentLang === 'ar' ? "انتهى الوقت! سيتم تسليم الامتحان تلقائياً." : "Time's up! Exam will be submitted automatically.");
+            alert(document.body.classList.contains('en-mode') ? "Time's up! Your exam will be submitted automatically." : "انتهى الوقت! سيتم تسليم الامتحان تلقائياً.");
             gradeExam();
         }
     }, 1000);
@@ -441,22 +474,14 @@ function toggleAnswers() {
     document.querySelectorAll('.answer-box').forEach(el => el.classList.toggle('hidden'));
 }
 
-// ==================== GRADING ====================
 function gradeExam() {
     let correctCount = 0;
-    const correctAnswersLetters = [
-        'c','c','b','b',  // Q1-4
-        'a','a','a','d',  // Q5-8
-        'a','b','a','c',  // Q9-12
-        'b','b','c','a'   // Q13-16
-    ];
-    
-    let sec1 = 0, sec2 = 0, sec3 = 0, sec4 = 0;
-    
-    for (let i = 1; i <= 16; i++) {
+    let sec1 = 0, sec2 = 0, sec3 = 0, sec4 = 0, sec5 = 0;
+
+    for(let i = 1; i <= 20; i++) {
         const selected = document.querySelector(`input[name="q${i}"]:checked`);
         const li = document.getElementById(`q-${i}`);
-        const isCorrect = selected && selected.value === correctAnswersLetters[i-1];
+        const isCorrect = selected && selected.value === correctAnswers[i-1];
         
         if (isCorrect) {
             correctCount++;
@@ -465,39 +490,59 @@ function gradeExam() {
             if (i <= 4) sec1++;
             else if (i <= 8) sec2++;
             else if (i <= 12) sec3++;
-            else sec4++;
+            else if (i <= 16) sec4++;
+            else sec5++;
         } else {
             li.classList.add('incorrect');
             li.classList.remove('correct');
         }
     }
 
-    const score = (correctCount / 16) * 100;
+    const score = (correctCount / 20) * 100;
     const successRate = Math.round(score);
     
     document.getElementById('res-total').textContent = `${Math.round(score)} / 100`;
-    document.getElementById('res-name').textContent = document.getElementById('studentName').value || (currentLang === 'ar' ? 'طالب' : 'Student');
-    document.getElementById('res-date').textContent = new Date().toLocaleDateString(currentLang === 'ar' ? 'ar-AE' : 'en-US');
+    document.getElementById('res-name').textContent = document.getElementById('studentName').value || (document.body.classList.contains('en-mode') ? 'Student' : 'طالب');
+    document.getElementById('res-date').textContent = new Date().toLocaleDateString(document.body.classList.contains('en-mode') ? 'en-US' : 'ar-AE');
     
     document.getElementById('sec1-score').textContent = `${sec1}/4`;
     document.getElementById('sec2-score').textContent = `${sec2}/4`;
     document.getElementById('sec3-score').textContent = `${sec3}/4`;
     document.getElementById('sec4-score').textContent = `${sec4}/4`;
+    document.getElementById('sec5-score').textContent = `${sec5}/4`;
     
     const badge = document.getElementById('success-badge');
     const percent = document.getElementById('success-percent');
     percent.textContent = `${successRate}%`;
     
-    if (currentLang === 'ar') {
-        if (successRate >= 90) { badge.textContent = 'ممتاز'; badge.className = 'success-badge grade-excellent'; }
-        else if (successRate >= 75) { badge.textContent = 'جيد جداً'; badge.className = 'success-badge grade-good'; }
-        else if (successRate >= 50) { badge.textContent = 'جيد'; badge.className = 'success-badge grade-pass'; }
-        else { badge.textContent = 'يحتاج تحسين'; badge.className = 'success-badge grade-fail'; }
+    if (document.body.classList.contains('en-mode')) {
+        if (successRate >= 90) {
+            badge.textContent = 'Excellent';
+            badge.className = 'success-badge grade-excellent';
+        } else if (successRate >= 75) {
+            badge.textContent = 'Very Good';
+            badge.className = 'success-badge grade-good';
+        } else if (successRate >= 50) {
+            badge.textContent = 'Good';
+            badge.className = 'success-badge grade-pass';
+        } else {
+            badge.textContent = 'Needs Improvement';
+            badge.className = 'success-badge grade-fail';
+        }
     } else {
-        if (successRate >= 90) { badge.textContent = 'Excellent'; badge.className = 'success-badge grade-excellent'; }
-        else if (successRate >= 75) { badge.textContent = 'Very Good'; badge.className = 'success-badge grade-good'; }
-        else if (successRate >= 50) { badge.textContent = 'Good'; badge.className = 'success-badge grade-pass'; }
-        else { badge.textContent = 'Needs Improvement'; badge.className = 'success-badge grade-fail'; }
+        if (successRate >= 90) {
+            badge.textContent = 'ممتاز';
+            badge.className = 'success-badge grade-excellent';
+        } else if (successRate >= 75) {
+            badge.textContent = 'جيد جداً';
+            badge.className = 'success-badge grade-good';
+        } else if (successRate >= 50) {
+            badge.textContent = 'جيد';
+            badge.className = 'success-badge grade-pass';
+        } else {
+            badge.textContent = 'يحتاج تحسين';
+            badge.className = 'success-badge grade-fail';
+        }
     }
     
     document.getElementById('results-panel').classList.remove('hidden');
@@ -505,62 +550,49 @@ function gradeExam() {
     document.getElementById('sendEmailBtn').classList.remove('hidden');
 }
 
-// ==================== EMAIL ====================
 function sendResultsToEmail() {
     const btn = document.getElementById('sendEmailBtn');
     const status = document.getElementById('emailStatus');
     btn.disabled = true;
-    btn.textContent = currentLang === 'ar' ? '⏳ جاري الإرسال...' : '⏳ Sending...';
+    btn.textContent = document.body.classList.contains('en-mode') ? '⏳ Sending...' : '⏳ جاري الإرسال...';
 
     const name = document.getElementById('studentName').value || 'N/A';
-    const studentClass = document.getElementById('studentClass').value || (currentLang === 'ar' ? 'غير محدد' : 'N/A');
-    const date = document.querySelector('input[type="text"]').value || new Date().toLocaleDateString(currentLang === 'ar' ? 'ar-AE' : 'en-US');
+    const studentClass = document.getElementById('studentClass').value || (document.body.classList.contains('en-mode') ? 'N/A' : 'غير محدد');
+    const date = document.querySelector('input[type="text"]').value || new Date().toLocaleDateString(document.body.classList.contains('en-mode') ? 'en-US' : 'ar-AE');
     const score = document.getElementById('res-total').textContent;
     const successRate = document.getElementById('success-percent').textContent;
     const sec1 = document.getElementById('sec1-score').textContent;
     const sec2 = document.getElementById('sec2-score').textContent;
     const sec3 = document.getElementById('sec3-score').textContent;
     const sec4 = document.getElementById('sec4-score').textContent;
+    const sec5 = document.getElementById('sec5-score').textContent;
 
-    const dir = currentLang === 'ar' ? 'rtl' : 'ltr';
-    const font = currentLang === 'ar' ? 'Cairo' : 'Inter';
+    const isEnglish = document.body.classList.contains('en-mode');
     
-    const sectionNames = {
-        ar: ['النظام الإحداثي ثلاثي الأبعاد', 'العمليات على المتجهات', 'الضرب النقطي', 'الضرب الاتجاهي والتطبيقات'],
-        en: ['3D Coordinate System', 'Vector Operations', 'Dot Product', 'Cross Product & Applications']
-    };
-    const sn = sectionNames[currentLang];
-
-    let answersHTML = `<div dir="${dir}" style="font-family: '${font}', sans-serif;">
-        <h3 style="color:#0d9488;">📊 ${currentLang === 'ar' ? 'تفصيل الأداء - امتحان المتجهات في الفضاء ثلاثي الأبعاد (1.2)' : 'Performance Details - Vectors in 3D Space Exam (1.2)'}:</h3>
-        <p><strong>${currentLang === 'ar' ? 'الطالب' : 'Student'}:</strong> ${name} | <strong>${currentLang === 'ar' ? 'الشعبة' : 'Class'}:</strong> ${studentClass}</p>
+    let answersHTML = `<div dir="${isEnglish ? 'ltr' : 'rtl'}" style="font-family: ${isEnglish ? 'Inter' : 'Cairo'}, sans-serif;">
+        <h3 style="color:#0d9488;">📊 ${isEnglish ? 'Performance Details - Vectors in 3D Space Exam (7.4):' : 'تفصيل الأداء - امتحان المتجهات في الفضاء ثلاثي الأبعاد (7.4):'}</h3>
+        <p><strong>${isEnglish ? 'Student' : 'الطالب'}:</strong> ${name} | <strong>${isEnglish ? 'Class' : 'الشعبة'}:</strong> ${studentClass}</p>
         <ul>
-            <li>${sn[0]}: ${sec1}</li>
-            <li>${sn[1]}: ${sec2}</li>
-            <li>${sn[2]}: ${sec3}</li>
-            <li>${sn[3]}: ${sec4}</li>
+            <li>${isEnglish ? 'Vectors in 3D Space' : 'المتجهات في الفضاء ثلاثي الأبعاد'}: ${sec1}</li>
+            <li>${isEnglish ? 'Dot Product Applications' : 'تطبيقات الضرب القياسي'}: ${sec2}</li>
+            <li>${isEnglish ? 'Cross Product Applications' : 'تطبيقات الضرب الاتجاهي'}: ${sec3}</li>
+            <li>${isEnglish ? 'Scalar Triple Product & Volume' : 'الضرب القياسي الثلاثي والحجم'}: ${sec4}</li>
+            <li>${isEnglish ? 'Angles Between Vectors' : 'الزوايا بين المتجهات'}: ${sec5}</li>
         </ul>
-        <table style="border:1px solid #e5e7eb; border-collapse:collapse; width:100%; font-size:14px; direction: ${dir};">
-        <tr style="background:#0d9488; color:white;"><th style="border:1px solid #e5e7eb; padding:8px;">${currentLang === 'ar' ? 'السؤال' : 'Q#'}</th><th style="border:1px solid #e5e7eb; padding:8px;">${currentLang === 'ar' ? 'الإجابة المختارة' : 'Selected'}</th><th style="border:1px solid #e5e7eb; padding:8px;">${currentLang === 'ar' ? 'الحالة' : 'Status'}</th></tr>`;
+        <table style="border:1px solid #e5e7eb; border-collapse:collapse; width:100%; font-size:14px; direction: ${isEnglish ? 'ltr' : 'rtl'};">
+        <tr style="background:#0d9488; color:white;"><th style="border:1px solid #e5e7eb; padding:8px;">${isEnglish ? 'Question' : 'السؤال'}</th><th style="border:1px solid #e5e7eb; padding:8px;">${isEnglish ? 'Selected' : 'الإجابة المختارة'}</th><th style="border:1px solid #e5e7eb; padding:8px;">${isEnglish ? 'Status' : 'الحالة'}</th></tr>`;
     
-    const correctAnswersLetters = ['c','c','b','b','a','a','a','d','a','b','a','c','b','b','c','a'];
-    
-    for (let i = 1; i <= 16; i++) {
+    for(let i = 1; i <= 20; i++) {
         const sel = document.querySelector(`input[name="q${i}"]:checked`);
-        const isCorrect = sel && sel.value === correctAnswersLetters[i-1];
-        answersHTML += `<tr><td style="border:1px solid #e5e7eb; padding:6px;">${i}</td><td style="border:1px solid #e5e7eb; padding:6px;">${sel ? sel.value.toUpperCase() : '-'}</td><td style="border:1px solid #e5e7eb; padding:6px; color:${isCorrect ? 'green' : 'red'}">${isCorrect ? '✅ ' + (currentLang === 'ar' ? 'صحيح' : 'Correct') : '❌ ' + (currentLang === 'ar' ? 'خطأ' : 'Wrong')}</td></tr>`;
+        const isCorrect = sel && sel.value === correctAnswers[i-1];
+        answersHTML += `<tr><td style="border:1px solid #e5e7eb; padding:6px;">${i}</td><td style="border:1px solid #e5e7eb; padding:6px;">${sel ? sel.value.toUpperCase() : '-'}</td><td style="border:1px solid #e5e7eb; padding:6px; color:${isCorrect ? 'green' : 'red'}">${isCorrect ? (isEnglish ? '✅ Correct' : '✅ صحيح') : (isEnglish ? '❌ Incorrect' : '❌ خطأ')}</td></tr>`;
     }
     answersHTML += '</table></div>';
 
-    const PUBLIC_KEY = "Rb3Lq8tXaFmc5YHUH";
-    const SERVICE_ID = "service_w15m64i";
-    const TEMPLATE_ID = "template_5b0u2tq";
-    const TARGET_EMAIL = "mohammedhesham872@gmail.com";
-
-    emailjs.init(PUBLIC_KEY);
     const templateParams = {
         to_email: TARGET_EMAIL,
         student_name: name,
+        student_class: studentClass,
         exam_date: date,
         total_score: score,
         success_rate: successRate,
@@ -569,24 +601,20 @@ function sendResultsToEmail() {
 
     emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
         .then(() => {
-            status.textContent = currentLang === 'ar' ? '✅ تم الإرسال بنجاح! تحقق من Gmail.' : '✅ Sent successfully! Check Gmail.';
+            status.textContent = isEnglish ? '✅ Sent successfully! Check your Gmail.' : '✅ تم الإرسال بنجاح! تحقق من Gmail.';
             status.style.color = '#059669';
-            btn.textContent = currentLang === 'ar' ? '✓ تم الإرسال' : '✓ Sent';
+            btn.textContent = isEnglish ? '✓ Sent' : '✓ تم الإرسال';
         })
         .catch(err => {
-            status.textContent = currentLang === 'ar' ? '❌ فشل الإرسال. تحقق من الإعدادات.' : '❌ Failed to send. Check settings.';
-            status.color = '#dc2626';
+            status.textContent = isEnglish ? '❌ Failed. Check console or setup.' : '❌ فشل الإرسال. تحقق من الإعدادات.';
+            status.style.color = '#dc2626';
             btn.disabled = false;
-            btn.textContent = currentLang === 'ar' ? '📧 إعادة المحاولة' : '📧 Retry';
+            btn.textContent = isEnglish ? '📧 Retry Send' : '📧 إعادة المحاولة';
             console.error('EmailJS Error:', err);
         });
 }
 
-// Initialize
-window.addEventListener('DOMContentLoaded', () => {
-    renderExam();
-    startTimer();
-});
+window.addEventListener('DOMContentLoaded', startTimer);
 </script>
 </body>
 </html>
